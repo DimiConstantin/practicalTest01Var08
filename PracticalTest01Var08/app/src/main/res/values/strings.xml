@@ -2,4 +2,5 @@
     <string name="app_name">PracticalTest01Var08</string>
     <string name="riddle">Riddle</string>
     <string name="answer">Answer</string>
+    <string name="riddleSecond">Riddle</string>
 </resources>
