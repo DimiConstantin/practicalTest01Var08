@@ -27,9 +27,9 @@
             android:windowSoftInputMode="adjustResize" />
 
         <service
-            android:name=".PracticalTest01Var08Servicec"
+            android:name=".PracticalTest01Var08Service"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
     </application>
 
 </manifest>

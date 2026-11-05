@@ -1,6 +1,9 @@
 package ro.pub.cs.systems.eim.practicaltest01var08
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -9,8 +12,10 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import kotlin.jvm.java
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,6 +24,16 @@ class MainActivity : AppCompatActivity() {
     private lateinit var playButton : Button
 
     private lateinit var lastResult : String
+
+    private val receiver = object : BroadcastReceiver() {
+
+        override fun onReceive(context: Context, intent: Intent) {
+
+            val hiddenAnswer = intent.getStringExtra("answer")
+
+            Toast.makeText(context, "The hint is $hiddenAnswer", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     private val playActivityLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -47,6 +62,17 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        val filter = IntentFilter()
+
+        filter.addAction("ro.pub.cs.systems.eim.practicaltest01var08.ANSWER")
+
+        ContextCompat.registerReceiver(
+            this,
+            receiver,
+            filter,
+            ContextCompat.RECEIVER_NOT_EXPORTED
+        )
+
         lastResult = ""
 
         riddleTextView = findViewById(R.id.riddle)
@@ -62,6 +88,12 @@ class MainActivity : AppCompatActivity() {
                     putExtra("riddle", riddle)
                 }
                 playActivityLauncher.launch(intent)
+
+                val intent2 = Intent(this, PracticalTest01Var08Service::class.java)
+                intent2.putExtra("answer", answer)
+                intent2.putExtra("riddle", riddle)
+                startService(intent2)
+                Log.d("MainActivity", "Starting PracticalTest01Var08Service")
             }
         }
 
