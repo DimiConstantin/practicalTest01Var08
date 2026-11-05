@@ -25,6 +25,11 @@
             android:name=".PracticalTest01Var08PlayActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+
+        <service
+            android:name=".PracticalTest01Var08Servicec"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

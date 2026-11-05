@@ -1,10 +1,10 @@
 package ro.pub.cs.systems.eim.practicaltest01var08
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -34,12 +34,22 @@ class PracticalTest01Var08PlayActivity : AppCompatActivity() {
 
         checkButton = findViewById(R.id.checkButton)
         checkButton.setOnClickListener {
-            val answer = answerEditText.text.toString()
-            if (answer == intent.getStringExtra("answer")) {
-                Toast.makeText(this, "Yes", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "No", Toast.LENGTH_SHORT).show()
+            val resultIntent = Intent().apply {
+                putExtra("returned_answer", answerEditText.text.toString())
             }
+            setResult(RESULT_OK, resultIntent)
+            finish()
         }
+
+        backButton = findViewById(R.id.backButton)
+        backButton.setOnClickListener {
+            setResult(RESULT_CANCELED)
+            finish()
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("answer", answerEditText.text.toString())
     }
 }
